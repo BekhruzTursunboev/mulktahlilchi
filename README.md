@@ -1,4 +1,4 @@
-# 🧠 AI Ko'chmas Mulk Bahosi  
+# 🧠 AI Ko'chmas Mulk Bahosi
 ### *Smart AI-powered real estate insights for Uzbekistan*  
 
 > A full-stack web app that uses advanced AI to evaluate real estate listings across Uzbekistan — giving users accurate pricing, location, and investment analysis in seconds.  
@@ -36,3 +36,4 @@
    ```bash
    git clone https://github.com/yourusername/ai-kochmas-mulk-bahosi.git
    cd ai-kochmas-mulk-bahosi
+
