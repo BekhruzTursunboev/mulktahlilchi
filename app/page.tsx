@@ -24,6 +24,26 @@ interface AnalysisResult {
   score: number
   label: 'Underpriced' | 'Fair' | 'Overpriced'
   explanation: string
+  factors: {
+    priceComparison: { score: number; reason: string; comparison: PlatformComparison[] }
+    location: { score: number; reason: string }
+    buildingQuality: { score: number; reason: string }
+    amenities: { score: number; reason: string }
+    sizeEfficiency: { score: number; reason: string }
+  }
+  marketInsights: {
+    averagePrice: number
+    priceRange: { min: number; max: number }
+    marketTrend: string
+    competition: string
+  }
+}
+
+interface PlatformComparison {
+  platform: string
+  averagePrice: number
+  listingsCount: number
+  pricePosition: 'lower' | 'average' | 'higher'
 }
 
 export default function HomePage() {
@@ -688,69 +708,227 @@ export default function HomePage() {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5 }}
-                  className="text-center space-y-6"
+                  className="space-y-6"
                 >
-                  {/* Score */}
+                  {/* Score and Label */}
                   <motion.div
-                    initial={{ scale: 0, rotate: -180 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{ delay: 0.2, type: "spring", stiffness: 200, damping: 15 }}
-                    className="text-6xl md:text-8xl lg:text-9xl font-bold gradient-text mb-4 md:mb-6 bounce-in relative"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="text-center space-y-4"
                   >
-                    <motion.span
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.5 }}
+                    <motion.div
+                      initial={{ scale: 0, rotate: -180 }}
+                      animate={{ scale: 1, rotate: 0 }}
+                      transition={{ delay: 0.3, type: "spring", stiffness: 200, damping: 15 }}
+                      className="text-6xl md:text-8xl font-bold gradient-text bounce-in relative inline-block"
                     >
                       {result.score}
-                    </motion.span>
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: 0.8, type: "spring", stiffness: 300 }}
-                      className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center"
-                    >
-                      <CheckCircle className="w-4 h-4 text-white" />
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.6, type: "spring", stiffness: 300 }}
+                        className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center"
+                      >
+                        <CheckCircle className="w-4 h-4 text-white" />
+                      </motion.div>
                     </motion.div>
-                  </motion.div>
-
-                  {/* Label */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20, scale: 0.8 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ delay: 0.4, type: "spring", stiffness: 300 }}
-                    className={`inline-block px-6 md:px-8 py-3 md:py-4 rounded-2xl border-2 ${getLabelColor(result.label)} font-bold text-lg md:text-xl mb-6 md:mb-8 shadow-lg`}
-                  >
-                    {getLabelText(result.label)}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20, scale: 0.8 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      transition={{ delay: 0.4, type: "spring", stiffness: 300 }}
+                      className={`inline-block px-6 md:px-8 py-3 md:py-4 rounded-2xl border-2 ${getLabelColor(result.label)} font-bold text-lg md:text-xl shadow-lg`}
+                    >
+                      {getLabelText(result.label)}
+                    </motion.div>
                   </motion.div>
 
                   {/* Explanation */}
                   <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.6, duration: 0.8 }}
-                    className="text-gray-700 text-lg md:text-xl leading-relaxed max-w-3xl mb-6 md:mb-8 px-4"
+                    transition={{ delay: 0.5, duration: 0.8 }}
+                    className="text-gray-700 text-lg leading-relaxed max-w-3xl px-4 md:px-8"
                   >
                     {result.explanation}
                   </motion.div>
 
-                  {/* Try Again Button */}
-                  <motion.button
+                  {/* Factor Breakdown */}
+                  <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.8 }}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => {
-                      setResult(null)
-                      setError(null)
-                      setFormErrors({})
-                    }}
-                    className="px-8 md:px-10 py-3 md:py-4 btn-secondary font-semibold rounded-xl text-base md:text-lg transition-all duration-300"
+                    transition={{ delay: 0.6 }}
+                    className="px-4 md:px-8 space-y-4"
                   >
-                    <span className="hidden sm:inline">Boshqa Mulkni Tahlil Qilish</span>
-                    <span className="sm:hidden">Boshqa Tahlil</span>
-                  </motion.button>
+                    <h3 className="text-xl md:text-2xl font-bold text-center mb-6 gradient-text">Tahlil Faktorlari</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {/* Price Comparison */}
+                      <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.7 }}
+                        className="bg-gray-50 rounded-xl p-4 border border-gray-200"
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="font-semibold text-gray-800">💰 Narx Taqqoslash</span>
+                          <span className={`text-sm font-bold ${result.factors.priceComparison.score >= 6 ? 'text-green-600' : result.factors.priceComparison.score >= 4 ? 'text-yellow-600' : 'text-red-600'}`}>
+                            {result.factors.priceComparison.score.toFixed(1)}/10
+                          </span>
+                        </div>
+                        <p className="text-sm text-gray-600 mb-3">{result.factors.priceComparison.reason}</p>
+                        <div className="text-xs text-gray-500 font-medium mb-2">Platformalar bo'yicha narxlar:</div>
+                        {result.factors.priceComparison.comparison.map((platform, idx) => (
+                          <div key={idx} className="flex items-center justify-between text-xs py-1 border-b border-gray-200 last:border-0">
+                            <span className="font-medium">{platform.platform}</span>
+                            <span className="flex items-center gap-2">
+                              <span>${platform.averagePrice.toFixed(2)}/m²</span>
+                              <span className={`px-2 py-0.5 rounded ${platform.pricePosition === 'lower' ? 'bg-green-100 text-green-700' : platform.pricePosition === 'higher' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'}`}>
+                                {platform.pricePosition === 'lower' ? 'past' : platform.pricePosition === 'higher' ? 'yuqori' : 'o\'rtacha'}
+                              </span>
+                            </span>
+                          </div>
+                        ))}
+                      </motion.div>
+
+                      {/* Location */}
+                      <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.75 }}
+                        className="bg-gray-50 rounded-xl p-4 border border-gray-200"
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="font-semibold text-gray-800">📍 Joylashuv</span>
+                          <span className={`text-sm font-bold ${result.factors.location.score >= 6 ? 'text-green-600' : result.factors.location.score >= 4 ? 'text-yellow-600' : 'text-red-600'}`}>
+                            {result.factors.location.score.toFixed(1)}/10
+                          </span>
+                        </div>
+                        <p className="text-sm text-gray-600">{result.factors.location.reason}</p>
+                      </motion.div>
+
+                      {/* Building Quality */}
+                      <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.8 }}
+                        className="bg-gray-50 rounded-xl p-4 border border-gray-200"
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="font-semibold text-gray-800">🏢 Bino Sifati</span>
+                          <span className={`text-sm font-bold ${result.factors.buildingQuality.score >= 6 ? 'text-green-600' : result.factors.buildingQuality.score >= 4 ? 'text-yellow-600' : 'text-red-600'}`}>
+                            {result.factors.buildingQuality.score.toFixed(1)}/10
+                          </span>
+                        </div>
+                        <p className="text-sm text-gray-600">{result.factors.buildingQuality.reason}</p>
+                      </motion.div>
+
+                      {/* Amenities */}
+                      <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.85 }}
+                        className="bg-gray-50 rounded-xl p-4 border border-gray-200"
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="font-semibold text-gray-800">✨ Qulayliklar</span>
+                          <span className={`text-sm font-bold ${result.factors.amenities.score >= 6 ? 'text-green-600' : result.factors.amenities.score >= 4 ? 'text-yellow-600' : 'text-red-600'}`}>
+                            {result.factors.amenities.score.toFixed(1)}/10
+                          </span>
+                        </div>
+                        <p className="text-sm text-gray-600">{result.factors.amenities.reason}</p>
+                      </motion.div>
+
+                      {/* Size Efficiency */}
+                      <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.9 }}
+                        className="bg-gray-50 rounded-xl p-4 border border-gray-200 md:col-span-2"
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="font-semibold text-gray-800">📐 Maydon Samaradorligi</span>
+                          <span className={`text-sm font-bold ${result.factors.sizeEfficiency.score >= 6 ? 'text-green-600' : result.factors.sizeEfficiency.score >= 4 ? 'text-yellow-600' : 'text-red-600'}`}>
+                            {result.factors.sizeEfficiency.score.toFixed(1)}/10
+                          </span>
+                        </div>
+                        <p className="text-sm text-gray-600">{result.factors.sizeEfficiency.reason}</p>
+                      </motion.div>
+                    </div>
+                  </motion.div>
+
+                  {/* Market Insights */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.95 }}
+                    className="px-4 md:px-8"
+                  >
+                    <h3 className="text-xl md:text-2xl font-bold text-center mb-6 gradient-text">Bozor Ma'lumotlari</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 border border-blue-200">
+                        <div className="text-sm text-blue-800 font-semibold mb-1">O'rtacha Narx</div>
+                        <div className="text-2xl md:text-3xl font-bold text-blue-900">
+                          ${result.marketInsights.averagePrice.toFixed(2)}
+                        </div>
+                        <div className="text-xs text-blue-700 mt-1">per m²</div>
+                      </div>
+                      <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4 border border-purple-200">
+                        <div className="text-sm text-purple-800 font-semibold mb-1">Bozor Tendensiyasi</div>
+                        <div className="text-sm md:text-base font-bold text-purple-900">
+                          {result.marketInsights.marketTrend}
+                        </div>
+                      </div>
+                      <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-4 border border-orange-200">
+                        <div className="text-sm text-orange-800 font-semibold mb-1">Raqobat Darajasi</div>
+                        <div className="text-sm md:text-base font-bold text-orange-900">
+                          {result.marketInsights.competition}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-4 bg-gray-50 rounded-xl p-4 border border-gray-200">
+                      <div className="text-sm text-gray-600 font-semibold mb-2">Narx Oralig'i (Bozor)</div>
+                      <div className="flex items-center justify-between">
+                        <div className="text-center">
+                          <div className="text-xs text-gray-500">Minimum</div>
+                          <div className="text-lg font-bold text-gray-800">${result.marketInsights.priceRange.min.toFixed(2)}</div>
+                        </div>
+                        <div className="flex-1 mx-4 h-2 bg-gray-200 rounded-full overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: '50%' }}
+                            transition={{ delay: 1.0, duration: 0.8 }}
+                            className="h-full bg-gradient-to-r from-blue-500 to-purple-500"
+                          />
+                        </div>
+                        <div className="text-center">
+                          <div className="text-xs text-gray-500">Maximum</div>
+                          <div className="text-lg font-bold text-gray-800">${result.marketInsights.priceRange.max.toFixed(2)}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  {/* Try Again Button */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 1.1 }}
+                    className="text-center px-4 md:px-8 pt-4"
+                  >
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => {
+                        setResult(null)
+                        setError(null)
+                        setFormErrors({})
+                      }}
+                      className="px-8 md:px-10 py-3 md:py-4 btn-secondary font-semibold rounded-xl text-base md:text-lg transition-all duration-300"
+                    >
+                      <span className="hidden sm:inline">Boshqa Mulkni Tahlil Qilish</span>
+                      <span className="sm:hidden">Boshqa Tahlil</span>
+                    </motion.button>
+                  </motion.div>
                 </motion.div>
               )}
             </AnimatePresence>
