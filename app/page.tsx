@@ -304,13 +304,21 @@ export default function HomePage() {
   const getLabelColor = (label: string) => {
     switch (label) {
       case 'Underpriced':
-        return 'bg-green-50 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800'
+        return darkMode 
+          ? 'bg-green-900/50 text-green-300 border-green-700' 
+          : 'bg-green-50 text-green-700 border-green-200'
       case 'Fair':
-        return 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800'
+        return darkMode 
+          ? 'bg-blue-900/50 text-blue-300 border-blue-700' 
+          : 'bg-blue-50 text-blue-700 border-blue-200'
       case 'Overpriced':
-        return 'bg-red-50 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800'
+        return darkMode 
+          ? 'bg-red-900/50 text-red-300 border-red-700' 
+          : 'bg-red-50 text-red-700 border-red-200'
       default:
-        return 'bg-gray-50 text-gray-700 border-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700'
+        return darkMode 
+          ? 'bg-gray-800 text-gray-300 border-gray-700' 
+          : 'bg-gray-50 text-gray-700 border-gray-200'
     }
   }
 
@@ -332,6 +340,27 @@ export default function HomePage() {
     if (score >= 5) return 'from-blue-500 to-indigo-600'
     if (score >= 3) return 'from-yellow-500 to-orange-600'
     return 'from-red-500 to-rose-600'
+  }
+
+  const getLabelColor = (label: string, isDark: boolean) => {
+    switch (label) {
+      case 'Underpriced':
+        return isDark 
+          ? 'bg-green-900/50 text-green-300 border-green-700' 
+          : 'bg-green-50 text-green-700 border-green-200'
+      case 'Fair':
+        return isDark 
+          ? 'bg-blue-900/50 text-blue-300 border-blue-700' 
+          : 'bg-blue-50 text-blue-700 border-blue-200'
+      case 'Overpriced':
+        return isDark 
+          ? 'bg-red-900/50 text-red-300 border-red-700' 
+          : 'bg-red-50 text-red-700 border-red-200'
+      default:
+        return isDark 
+          ? 'bg-gray-800 text-gray-300 border-gray-700' 
+          : 'bg-gray-50 text-gray-700 border-gray-200'
+    }
   }
 
   return (
@@ -1216,7 +1245,7 @@ export default function HomePage() {
                       initial={{ opacity: 0, y: 20, scale: 0.8 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       transition={{ delay: 0.4, type: "spring", stiffness: 300 }}
-                      className={`inline-block px-8 py-4 rounded-2xl border-2 text-xl font-bold shadow-lg ${getLabelColor(result.label)}`}
+                      className={`inline-block px-8 py-4 rounded-2xl border-2 text-xl font-bold shadow-lg ${getLabelColor(result.label, darkMode)}`}
                     >
                       {getLabelText(result.label)}
                     </motion.div>
@@ -1281,7 +1310,7 @@ export default function HomePage() {
                     transition={{ delay: 0.6, duration: 0.8 }}
                     className={`p-6 rounded-xl ${darkMode ? 'bg-gray-800 border border-gray-700' : 'bg-gray-50 border border-gray-200'}`}
                   >
-                    <p className={`text-lg leading-relaxed ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                    <p className={`text-lg leading-relaxed ${darkMode ? 'text-gray-200' : 'text-gray-700'}`}>
                       {result.explanation}
                     </p>
                   </motion.div>
@@ -1305,18 +1334,18 @@ export default function HomePage() {
                         reason={result.factors.priceComparison.reason}
                         darkMode={darkMode}
                       >
-                        <div className="text-xs font-semibold mb-2 dark:text-gray-400 text-gray-600">Platformalar bo'yicha narxlar:</div>
+                        <div className="text-xs font-semibold mb-2 dark:text-gray-300 text-gray-600">Platformalar bo'yicha narxlar:</div>
                         {result.factors.priceComparison.comparison.map((platform, idx) => (
                           <div key={idx} className={`flex items-center justify-between text-xs py-2 border-b ${darkMode ? 'border-gray-700' : 'border-gray-200'} last:border-0`}>
                             <span className="font-medium dark:text-white">{platform.platform}</span>
                             <div className="flex items-center gap-2">
-                              <span className="dark:text-gray-300">${platform.averagePrice.toFixed(2)}/m²</span>
+                              <span className="dark:text-white">${platform.averagePrice.toFixed(2)}/m²</span>
                               <span className={`px-2 py-0.5 rounded text-xs font-medium ${
                                 platform.pricePosition === 'lower' 
-                                  ? 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400'
+                                  ? darkMode ? 'bg-green-900 text-green-300' : 'bg-green-100 text-green-700'
                                   : platform.pricePosition === 'higher'
-                                  ? 'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-400'
-                                  : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/50 dark:text-yellow-400'
+                                  ? darkMode ? 'bg-red-900 text-red-300' : 'bg-red-100 text-red-700'
+                                  : darkMode ? 'bg-yellow-900 text-yellow-300' : 'bg-yellow-100 text-yellow-700'
                               }`}>
                                 {platform.pricePosition === 'lower' ? 'past' : platform.pricePosition === 'higher' ? 'yuqori' : 'o\'rtacha'}
                               </span>
@@ -1400,11 +1429,11 @@ export default function HomePage() {
                     </div>
                     
                     <div className={`p-6 rounded-xl ${darkMode ? 'bg-gray-800 border border-gray-700' : 'bg-gray-50 border border-gray-200'}`}>
-                      <div className={`text-sm font-semibold mb-4 dark:text-gray-400 text-gray-600`}>Narx Oralig'i (Bozor)</div>
+                      <div className={`text-sm font-semibold mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Narx Oralig'i (Bozor)</div>
                       <div className="flex items-center justify-between">
                         <div className="text-center">
-                          <div className={`text-xs dark:text-gray-500 text-gray-500 mb-1`}>Minimum</div>
-                          <div className={`text-2xl font-bold dark:text-white text-gray-900`}>${result.marketInsights.priceRange.min.toFixed(2)}</div>
+                          <div className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'} mb-1`}>Minimum</div>
+                          <div className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>${result.marketInsights.priceRange.min.toFixed(2)}</div>
                         </div>
                         <div className="flex-1 mx-6 h-3 rounded-full overflow-hidden dark:bg-gray-700 bg-gray-200">
                           <motion.div
@@ -1415,7 +1444,7 @@ export default function HomePage() {
                           />
                         </div>
                         <div className="text-center">
-                          <div className={`text-xs dark:text-gray-500 text-gray-500 mb-1`}>Maximum</div>
+                          <div className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'} mb-1`}>Maximum</div>
                           <div className={`text-2xl font-bold dark:text-white text-gray-900`}>${result.marketInsights.priceRange.max.toFixed(2)}</div>
                         </div>
                       </div>
@@ -1534,7 +1563,7 @@ function FactorCard({ title, score, reason, children, darkMode, fullWidth }: {
       className={`p-4 rounded-xl border-2 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'} ${fullWidth ? 'md:col-span-2' : ''}`}
     >
       <div className="flex items-center justify-between mb-3">
-        <span className={`font-bold dark:text-white`}>{title}</span>
+        <span className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{title}</span>
         <div className="flex items-center gap-2">
           <div className={`w-16 h-2 rounded-full overflow-hidden dark:bg-gray-700 bg-gray-300`}>
             <motion.div
@@ -1545,16 +1574,16 @@ function FactorCard({ title, score, reason, children, darkMode, fullWidth }: {
             />
           </div>
           <span className={`text-sm font-bold ${
-            score >= 7 ? 'text-green-600 dark:text-green-400' : 
-            score >= 5 ? 'text-blue-600 dark:text-blue-400' : 
-            score >= 3 ? 'text-yellow-600 dark:text-yellow-400' : 
-            'text-red-600 dark:text-red-400'
+            score >= 7 ? darkMode ? 'text-green-400' : 'text-green-600' : 
+            score >= 5 ? darkMode ? 'text-blue-400' : 'text-blue-600' : 
+            score >= 3 ? darkMode ? 'text-yellow-400' : 'text-yellow-600' : 
+            darkMode ? 'text-red-400' : 'text-red-600'
           }`}>
             {score.toFixed(1)}
           </span>
         </div>
       </div>
-      <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{reason}</p>
+      <p className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>{reason}</p>
       {children}
     </motion.div>
   )
