@@ -1,0 +1,546 @@
+/**
+ * Localisation.
+ *
+ * Uzbek real estate is genuinely trilingual: listings, brokers and contracts move
+ * between Uzbek and Russian constantly, and diaspora buyers work in English. The
+ * old UI hard-coded Uzbek strings into JSX and template literals inside the API
+ * route, which meant the server was formatting user-facing prose — so Russian
+ * could not be added without rewriting the engine.
+ *
+ * The engine now returns keys and numbers. All prose lives here.
+ */
+
+export type Locale = 'uz' | 'ru' | 'en'
+
+export const LOCALES: { code: Locale; label: string }[] = [
+  { code: 'uz', label: "O'zbekcha" },
+  { code: 'ru', label: 'Русский' },
+  { code: 'en', label: 'English' },
+]
+
+export const DEFAULT_LOCALE: Locale = 'uz'
+
+type Dict = Record<string, string>
+
+const uz: Dict = {
+  'unit.rooms': 'xona',
+  'unit.perMonth': '/oy',
+  'common.yes': 'Bor',
+  'common.no': "Yo'q",
+  'app.name': 'Mulk Tahlilchi',
+  'app.tagline': "O'zbekiston ko'chmas mulk bozori uchun mustaqil narx tahlili",
+  'app.subtitle': "Mulkning adolatli bahosini hisoblang, so'ralayotgan narx bilan solishtiring va muzokara uchun aniq raqam oling.",
+
+  'nav.valuation': 'Baholash',
+  'nav.market': 'Bozor',
+  'nav.saved': 'Saqlanganlar',
+  'nav.how': 'Qanday ishlaydi',
+
+  'form.title': 'Mulk maʼlumotlari',
+  'form.essentials': 'Asosiy maʼlumotlar',
+  'form.details': "Qo'shimcha maʼlumotlar",
+  'form.detailsHint': "Har bir qo'shimcha maydon baho aniqligini oshiradi",
+  'form.accuracy': 'Baho aniqligi',
+  'form.submit': 'Mulkni baholash',
+  'form.submitting': 'Hisoblanmoqda…',
+  'form.reset': 'Tozalash',
+
+  'field.deal': 'Bitim turi',
+  'field.region': 'Viloyat',
+  'field.district': 'Tuman / shahar',
+  'field.price': "So'ralayotgan narx",
+  'field.priceRent': "Oylik ijara haqi",
+  'field.size': 'Maydon',
+  'field.rooms': 'Xonalar soni',
+  'field.floor': 'Qavat',
+  'field.totalFloors': 'Binodagi qavatlar',
+  'field.kind': 'Mulk turi',
+  'field.condition': 'Holati',
+  'field.material': 'Bino materiali',
+  'field.yearBuilt': 'Qurilgan yili',
+  'field.elevator': 'Lift bor',
+  'field.parking': 'Avtoturargoh bor',
+  'field.balcony': 'Balkon bor',
+  'field.furnished': 'Mebel bilan',
+  'field.metroMinutes': 'Metroga piyoda (daqiqa)',
+  'field.optional': 'ixtiyoriy',
+
+  'deal.sale': 'Sotib olish',
+  'deal.rent': 'Ijara',
+
+  'kind.apartment': 'Kvartira',
+  'kind.house': 'Xovli uy',
+  'kind.studio': 'Studiya',
+  'kind.commercial': 'Tijorat',
+
+  'condition.new': 'Yangi',
+  'condition.renovated': 'Yevroremont',
+  'condition.good': 'Yaxshi holatda',
+  'condition.needs_renovation': "Ta'mir talab",
+  'condition.shell': 'Qora suvoq',
+
+  'material.panel': 'Panel',
+  'material.brick': "G'isht",
+  'material.monolith': 'Monolit',
+  'material.unknown': 'Bilmayman',
+
+  'result.fairValue': 'Adolatli bozor bahosi',
+  'result.range': 'Ehtimoliy oraliq',
+  'result.asking': "So'ralayotgan narx",
+  'result.perSqm': '/m²',
+  'result.districtMedian': 'Tuman mediana narxi',
+  'result.difference': 'Farq',
+  'result.confidence': 'Ishonchlilik',
+  'result.newAnalysis': 'Yangi tahlil',
+  'result.save': 'Saqlash',
+  'result.saved': 'Saqlandi',
+  'result.copy': 'Nusxa olish',
+  'result.copied': "Nusxa olindi",
+
+  'verdict.underpriced': 'Bozordan arzon',
+  'verdict.fair': 'Bozor narxida',
+  'verdict.overpriced': 'Bozordan qimmat',
+  'verdict.underpriced.desc': "So'ralayotgan narx bizning baho oralig'imizdan past. Tez harakat qilish maʼnoga ega, ammo avval hujjatlarni tekshiring.",
+  'verdict.fair.desc': "So'ralayotgan narx bizning baho oralig'imiz ichida. Narx asoslangan, muzokara odatiy chegirma doirasida boradi.",
+  'verdict.overpriced.desc': "So'ralayotgan narx bizning baho oralig'imizdan yuqori. Sotuvchi narxni asoslashi kerak.",
+
+  'strength.slight': 'biroz',
+  'strength.clear': 'sezilarli',
+  'strength.strong': 'kuchli',
+
+  'confidence.high': 'Yuqori',
+  'confidence.medium': "O'rtacha",
+  'confidence.low': 'Past',
+
+  'section.factors': 'Bahoga taʼsir qilgan omillar',
+  'section.factorsHint': "Tuman mediana narxidan boshlab, har bir omil narxni qanday o'zgartirgani",
+  'section.quality': 'Mulk sifati',
+  'section.qualityHint': 'Bu ball narxga bogʻliq emas — u faqat mulkning oʻzini tavsiflaydi',
+  'section.investment': 'Investitsiya koʻrsatkichlari',
+  'section.mortgage': 'Ipoteka hisobi',
+  'section.negotiation': 'Muzokara strategiyasi',
+  'section.market': 'Bozor konteksti',
+  'section.caveats': 'Cheklovlar',
+
+  'quality.condition': 'Holati',
+  'quality.metro': 'Metro yaqinligi',
+  'quality.structure': 'Bino holati',
+  'quality.access': 'Qavat va qulaylik',
+  'quality.layout': 'Planirovka',
+  'quality.material': 'Qurilish materiali',
+
+  'invest.rent': 'Kutilayotgan ijara',
+  'invest.grossYield': 'Yalpi daromadlilik',
+  'invest.netYield': 'Sof daromadlilik',
+  'invest.payback': 'Qoplanish muddati',
+  'invest.priceToRent': 'Narx / yillik ijara',
+  'invest.costNote': 'Sof daromad yillik ijaraning {pct}% xarajat sifatida chegirilgan holda hisoblangan (boʻsh turish, taʼmir, soliq).',
+  'invest.years': 'yil',
+
+  'mortgage.downPayment': "Boshlang'ich toʻlov",
+  'mortgage.rate': 'Yillik stavka',
+  'mortgage.term': 'Muddat',
+  'mortgage.monthly': 'Oylik toʻlov',
+  'mortgage.loan': 'Kredit summasi',
+  'mortgage.totalInterest': 'Umumiy foiz',
+  'mortgage.requiredIncome': 'Zarur oylik daromad',
+  'mortgage.incomeNote': "Toʻlov daromadning 40% dan oshmasligi shartidan kelib chiqib.",
+  'mortgage.years': 'yil',
+
+  'negotiate.opening': 'Birinchi taklif',
+  'negotiate.target': 'Maqsadli narx',
+  'negotiate.walkAway': 'Voz kechish chegarasi',
+  'negotiate.typicalDiscount': 'Odatiy chegirma',
+  'negotiate.leverage': 'Ustunlik',
+  'negotiate.leverage.buyer': 'Xaridorda',
+  'negotiate.leverage.seller': 'Sotuvchida',
+  'negotiate.leverage.balanced': 'Muvozanatda',
+  'negotiate.dom': 'Bozorda oʻrtacha turish muddati',
+  'negotiate.days': 'kun',
+  'negotiate.hint': "Bu raqamlar tumandagi sotuv tezligi va bizning bahomizdan kelib chiqadi. Voz kechish chegarasidan yuqorida narxni oqlab boʻlmaydi.",
+
+  'market.yoy': 'Yillik oʻzgarish',
+  'market.dom': 'Sotuv muddati',
+  'market.sample': 'Tahlildagi eʼlonlar',
+  'market.asOf': 'Maʼlumot sanasi',
+  'market.listings': 'ta eʼlon',
+
+  'caveat.dataset_modelled': "Narx darajalari eʼlon qilingan bozor hisobotlari asosida kalibrlangan model boʻlib, jonli eʼlonlar bazasi emas.",
+  'caveat.asking_price_basis': "Barcha raqamlar soʻralayotgan narxlarga asoslangan. Oʻzbekistonda rasmiy bitim narxlari ochiq reyestri yoʻq, real bitim narxi odatda pastroq boʻladi.",
+  'caveat.low_sample': "Bu hududda taqqoslash uchun eʼlonlar kam — baho oraligʻi keng va ehtiyotkorlik bilan qabul qilinishi kerak.",
+  'caveat.missing_attributes': "Baʼzi maydonlar toʻldirilmagan. Ularni kiritsangiz baho oraligʻi torayadi.",
+  'caveat.unusual_size': "Maydon bozordagi odatiy diapazondan tashqarida — model bunday obʼektlarda kamroq ishonchli.",
+  'caveat.commercial_calibration': "Model turar-joy obʼektlariga kalibrlangan. Tijorat obʼekti uchun daromad usuli aniqroq natija beradi.",
+  'caveat.house_land_excluded': "Xovli uy bahosi yer uchastkasining alohida qiymatini toʻliq hisobga olmaydi.",
+
+  'error.rate_limited': "Soʻrovlar chegarasi. Bir daqiqadan soʻng qayta urinib koʻring.",
+  'error.validation_failed': "Kiritilgan maʼlumotlarda xatolik bor.",
+  'error.unknown_location': "Bu hudud uchun bozor maʼlumoti yoʻq.",
+  'error.internal_error': 'Kutilmagan xatolik yuz berdi.',
+  'error.network': "Serverga ulanib boʻlmadi.",
+  'error.required': 'Bu maydon toʻldirilishi shart',
+  'error.floor_exceeds_total_floors': 'Qavat binodagi qavatlar sonidan katta boʻlishi mumkin emas',
+  'error.price_out_of_range_for_deal_type': "Narx bitim turiga mos kelmaydi — valyuta yoki davrni tekshiring",
+
+  'how.title': 'Baho qanday hisoblanadi',
+  'how.step1': 'Tumanning mediana m² narxi olinadi',
+  'how.step2': "Mulk xususiyatlari uchun tuzatishlar qoʻllaniladi",
+  'how.step3': "Maʼlumot yetarliligiga qarab ishonch oraligʻi hisoblanadi",
+  'how.step4': "Soʻralayotgan narx shu oraliq bilan solishtiriladi",
+  'how.note': "Joylashuv faqat bir marta — tuman mediana narxi orqali hisobga olinadi. Sifat bali narxga taʼsir qilmaydi.",
+}
+
+const ru: Dict = {
+  'unit.rooms': 'комн.',
+  'unit.perMonth': '/мес',
+  'common.yes': 'Есть',
+  'common.no': 'Нет',
+  'app.name': 'Mulk Tahlilchi',
+  'app.tagline': 'Независимая оценка цен на рынке недвижимости Узбекистана',
+  'app.subtitle': 'Рассчитайте справедливую стоимость объекта, сравните её с запрашиваемой ценой и получите конкретную цифру для переговоров.',
+
+  'nav.valuation': 'Оценка',
+  'nav.market': 'Рынок',
+  'nav.saved': 'Сохранённые',
+  'nav.how': 'Как это работает',
+
+  'form.title': 'Данные объекта',
+  'form.essentials': 'Основные данные',
+  'form.details': 'Дополнительные данные',
+  'form.detailsHint': 'Каждое дополнительное поле повышает точность оценки',
+  'form.accuracy': 'Точность оценки',
+  'form.submit': 'Оценить объект',
+  'form.submitting': 'Расчёт…',
+  'form.reset': 'Очистить',
+
+  'field.deal': 'Тип сделки',
+  'field.region': 'Область',
+  'field.district': 'Район / город',
+  'field.price': 'Запрашиваемая цена',
+  'field.priceRent': 'Ежемесячная аренда',
+  'field.size': 'Площадь',
+  'field.rooms': 'Количество комнат',
+  'field.floor': 'Этаж',
+  'field.totalFloors': 'Этажей в доме',
+  'field.kind': 'Тип объекта',
+  'field.condition': 'Состояние',
+  'field.material': 'Материал дома',
+  'field.yearBuilt': 'Год постройки',
+  'field.elevator': 'Есть лифт',
+  'field.parking': 'Есть парковка',
+  'field.balcony': 'Есть балкон',
+  'field.furnished': 'С мебелью',
+  'field.metroMinutes': 'До метро пешком (мин)',
+  'field.optional': 'необязательно',
+
+  'deal.sale': 'Покупка',
+  'deal.rent': 'Аренда',
+
+  'kind.apartment': 'Квартира',
+  'kind.house': 'Частный дом',
+  'kind.studio': 'Студия',
+  'kind.commercial': 'Коммерческая',
+
+  'condition.new': 'Новое',
+  'condition.renovated': 'Евроремонт',
+  'condition.good': 'Хорошее',
+  'condition.needs_renovation': 'Требует ремонта',
+  'condition.shell': 'Черновая отделка',
+
+  'material.panel': 'Панельный',
+  'material.brick': 'Кирпичный',
+  'material.monolith': 'Монолитный',
+  'material.unknown': 'Не знаю',
+
+  'result.fairValue': 'Справедливая рыночная цена',
+  'result.range': 'Вероятный диапазон',
+  'result.asking': 'Запрашиваемая цена',
+  'result.perSqm': '/м²',
+  'result.districtMedian': 'Медиана по району',
+  'result.difference': 'Разница',
+  'result.confidence': 'Достоверность',
+  'result.newAnalysis': 'Новый анализ',
+  'result.save': 'Сохранить',
+  'result.saved': 'Сохранено',
+  'result.copy': 'Копировать',
+  'result.copied': 'Скопировано',
+
+  'verdict.underpriced': 'Ниже рынка',
+  'verdict.fair': 'По рынку',
+  'verdict.overpriced': 'Выше рынка',
+  'verdict.underpriced.desc': 'Запрашиваемая цена ниже нашего диапазона. Действовать быстро имеет смысл, но сначала проверьте документы.',
+  'verdict.fair.desc': 'Запрашиваемая цена внутри нашего диапазона. Цена обоснована, торг идёт в пределах обычной скидки.',
+  'verdict.overpriced.desc': 'Запрашиваемая цена выше нашего диапазона. Продавец должен её обосновать.',
+
+  'strength.slight': 'немного',
+  'strength.clear': 'заметно',
+  'strength.strong': 'значительно',
+
+  'confidence.high': 'Высокая',
+  'confidence.medium': 'Средняя',
+  'confidence.low': 'Низкая',
+
+  'section.factors': 'Факторы, повлиявшие на оценку',
+  'section.factorsHint': 'От медианы района — как каждый фактор изменил цену',
+  'section.quality': 'Качество объекта',
+  'section.qualityHint': 'Этот балл не зависит от цены — он описывает только сам объект',
+  'section.investment': 'Инвестиционные показатели',
+  'section.mortgage': 'Ипотечный расчёт',
+  'section.negotiation': 'Стратегия переговоров',
+  'section.market': 'Рыночный контекст',
+  'section.caveats': 'Ограничения',
+
+  'quality.condition': 'Состояние',
+  'quality.metro': 'Близость метро',
+  'quality.structure': 'Состояние дома',
+  'quality.access': 'Этаж и доступность',
+  'quality.layout': 'Планировка',
+  'quality.material': 'Материал',
+
+  'invest.rent': 'Ожидаемая аренда',
+  'invest.grossYield': 'Валовая доходность',
+  'invest.netYield': 'Чистая доходность',
+  'invest.payback': 'Срок окупаемости',
+  'invest.priceToRent': 'Цена / годовая аренда',
+  'invest.costNote': 'Чистая доходность рассчитана с вычетом {pct}% годовой аренды на расходы (простой, ремонт, налоги).',
+  'invest.years': 'лет',
+
+  'mortgage.downPayment': 'Первоначальный взнос',
+  'mortgage.rate': 'Годовая ставка',
+  'mortgage.term': 'Срок',
+  'mortgage.monthly': 'Ежемесячный платёж',
+  'mortgage.loan': 'Сумма кредита',
+  'mortgage.totalInterest': 'Всего процентов',
+  'mortgage.requiredIncome': 'Требуемый доход',
+  'mortgage.incomeNote': 'Исходя из того, что платёж не превышает 40% дохода.',
+  'mortgage.years': 'лет',
+
+  'negotiate.opening': 'Первое предложение',
+  'negotiate.target': 'Целевая цена',
+  'negotiate.walkAway': 'Порог отказа',
+  'negotiate.typicalDiscount': 'Обычная скидка',
+  'negotiate.leverage': 'Преимущество',
+  'negotiate.leverage.buyer': 'У покупателя',
+  'negotiate.leverage.seller': 'У продавца',
+  'negotiate.leverage.balanced': 'Паритет',
+  'negotiate.dom': 'Средний срок экспозиции',
+  'negotiate.days': 'дн.',
+  'negotiate.hint': 'Эти цифры исходят из скорости продаж в районе и нашей оценки. Выше порога отказа цену обосновать нельзя.',
+
+  'market.yoy': 'Изменение за год',
+  'market.dom': 'Срок продажи',
+  'market.sample': 'Объявлений в анализе',
+  'market.asOf': 'Данные на',
+  'market.listings': 'объявл.',
+
+  'caveat.dataset_modelled': 'Уровни цен — калиброванная модель на основе опубликованных рыночных отчётов, а не база живых объявлений.',
+  'caveat.asking_price_basis': 'Все цифры основаны на запрашиваемых ценах. В Узбекистане нет открытого реестра сделок, реальная цена сделки обычно ниже.',
+  'caveat.low_sample': 'В этой локации мало сопоставимых объявлений — диапазон широкий, относитесь к нему осторожно.',
+  'caveat.missing_attributes': 'Некоторые поля не заполнены. Их указание сузит диапазон оценки.',
+  'caveat.unusual_size': 'Площадь вне типичного рыночного диапазона — на таких объектах модель менее надёжна.',
+  'caveat.commercial_calibration': 'Модель откалибрована на жилой недвижимости. Для коммерции точнее доходный подход.',
+  'caveat.house_land_excluded': 'Оценка дома не полностью учитывает отдельную стоимость земельного участка.',
+
+  'error.rate_limited': 'Превышен лимит запросов. Попробуйте через минуту.',
+  'error.validation_failed': 'В введённых данных есть ошибки.',
+  'error.unknown_location': 'Для этой локации нет рыночных данных.',
+  'error.internal_error': 'Произошла непредвиденная ошибка.',
+  'error.network': 'Не удалось связаться с сервером.',
+  'error.required': 'Это поле обязательно',
+  'error.floor_exceeds_total_floors': 'Этаж не может быть больше числа этажей в доме',
+  'error.price_out_of_range_for_deal_type': 'Цена не соответствует типу сделки — проверьте валюту и период',
+
+  'how.title': 'Как считается оценка',
+  'how.step1': 'Берётся медианная цена м² по району',
+  'how.step2': 'Применяются поправки на характеристики объекта',
+  'how.step3': 'Считается доверительный интервал по полноте данных',
+  'how.step4': 'Запрашиваемая цена сравнивается с этим интервалом',
+  'how.note': 'Локация учитывается ровно один раз — через медиану района. Балл качества на цену не влияет.',
+}
+
+const en: Dict = {
+  'unit.rooms': 'rooms',
+  'unit.perMonth': '/mo',
+  'common.yes': 'Yes',
+  'common.no': 'No',
+  'app.name': 'Mulk Tahlilchi',
+  'app.tagline': 'Independent price analysis for the Uzbek property market',
+  'app.subtitle': 'Estimate what a property is really worth, compare it against the asking price, and get a concrete number to negotiate with.',
+
+  'nav.valuation': 'Valuation',
+  'nav.market': 'Market',
+  'nav.saved': 'Saved',
+  'nav.how': 'How it works',
+
+  'form.title': 'Property details',
+  'form.essentials': 'Essentials',
+  'form.details': 'Additional details',
+  'form.detailsHint': 'Every extra field narrows the estimate',
+  'form.accuracy': 'Estimate precision',
+  'form.submit': 'Value this property',
+  'form.submitting': 'Calculating…',
+  'form.reset': 'Clear',
+
+  'field.deal': 'Deal type',
+  'field.region': 'Region',
+  'field.district': 'District / city',
+  'field.price': 'Asking price',
+  'field.priceRent': 'Monthly rent',
+  'field.size': 'Area',
+  'field.rooms': 'Rooms',
+  'field.floor': 'Floor',
+  'field.totalFloors': 'Floors in building',
+  'field.kind': 'Property type',
+  'field.condition': 'Condition',
+  'field.material': 'Building material',
+  'field.yearBuilt': 'Year built',
+  'field.elevator': 'Has lift',
+  'field.parking': 'Has parking',
+  'field.balcony': 'Has balcony',
+  'field.furnished': 'Furnished',
+  'field.metroMinutes': 'Walk to metro (min)',
+  'field.optional': 'optional',
+
+  'deal.sale': 'Buy',
+  'deal.rent': 'Rent',
+
+  'kind.apartment': 'Apartment',
+  'kind.house': 'House',
+  'kind.studio': 'Studio',
+  'kind.commercial': 'Commercial',
+
+  'condition.new': 'New',
+  'condition.renovated': 'Renovated',
+  'condition.good': 'Good',
+  'condition.needs_renovation': 'Needs renovation',
+  'condition.shell': 'Bare shell',
+
+  'material.panel': 'Panel',
+  'material.brick': 'Brick',
+  'material.monolith': 'Monolithic',
+  'material.unknown': "Don't know",
+
+  'result.fairValue': 'Fair market value',
+  'result.range': 'Likely range',
+  'result.asking': 'Asking price',
+  'result.perSqm': '/m²',
+  'result.districtMedian': 'District median',
+  'result.difference': 'Difference',
+  'result.confidence': 'Confidence',
+  'result.newAnalysis': 'New analysis',
+  'result.save': 'Save',
+  'result.saved': 'Saved',
+  'result.copy': 'Copy',
+  'result.copied': 'Copied',
+
+  'verdict.underpriced': 'Below market',
+  'verdict.fair': 'At market',
+  'verdict.overpriced': 'Above market',
+  'verdict.underpriced.desc': 'The asking price sits below our estimated range. Moving quickly makes sense, but verify the title documents first.',
+  'verdict.fair.desc': 'The asking price sits inside our estimated range. The price is defensible; negotiate within the normal discount.',
+  'verdict.overpriced.desc': 'The asking price sits above our estimated range. The seller needs to justify it.',
+
+  'strength.slight': 'slightly',
+  'strength.clear': 'clearly',
+  'strength.strong': 'substantially',
+
+  'confidence.high': 'High',
+  'confidence.medium': 'Medium',
+  'confidence.low': 'Low',
+
+  'section.factors': 'What moved the estimate',
+  'section.factorsHint': 'Starting from the district median, how each factor changed the price',
+  'section.quality': 'Property quality',
+  'section.qualityHint': 'This score is independent of price — it describes the asset only',
+  'section.investment': 'Investment metrics',
+  'section.mortgage': 'Mortgage',
+  'section.negotiation': 'Negotiation strategy',
+  'section.market': 'Market context',
+  'section.caveats': 'Limitations',
+
+  'quality.condition': 'Condition',
+  'quality.metro': 'Metro access',
+  'quality.structure': 'Building age',
+  'quality.access': 'Floor & access',
+  'quality.layout': 'Layout',
+  'quality.material': 'Construction',
+
+  'invest.rent': 'Expected rent',
+  'invest.grossYield': 'Gross yield',
+  'invest.netYield': 'Net yield',
+  'invest.payback': 'Payback period',
+  'invest.priceToRent': 'Price / annual rent',
+  'invest.costNote': 'Net yield assumes {pct}% of gross rent goes to vacancy, maintenance and tax.',
+  'invest.years': 'years',
+
+  'mortgage.downPayment': 'Down payment',
+  'mortgage.rate': 'Annual rate',
+  'mortgage.term': 'Term',
+  'mortgage.monthly': 'Monthly payment',
+  'mortgage.loan': 'Loan amount',
+  'mortgage.totalInterest': 'Total interest',
+  'mortgage.requiredIncome': 'Income needed',
+  'mortgage.incomeNote': 'Assuming the payment stays at or below 40% of gross income.',
+  'mortgage.years': 'years',
+
+  'negotiate.opening': 'Opening offer',
+  'negotiate.target': 'Target price',
+  'negotiate.walkAway': 'Walk-away price',
+  'negotiate.typicalDiscount': 'Typical discount',
+  'negotiate.leverage': 'Leverage',
+  'negotiate.leverage.buyer': 'Buyer',
+  'negotiate.leverage.seller': 'Seller',
+  'negotiate.leverage.balanced': 'Balanced',
+  'negotiate.dom': 'Median time on market',
+  'negotiate.days': 'days',
+  'negotiate.hint': 'These figures come from how fast the district clears and from our estimate. Above the walk-away price there is no defensible case.',
+
+  'market.yoy': 'Year-on-year',
+  'market.dom': 'Time to sell',
+  'market.sample': 'Listings in reference',
+  'market.asOf': 'Data as of',
+  'market.listings': 'listings',
+
+  'caveat.dataset_modelled': 'Price levels are a calibrated model built from published market reporting, not a live listings database.',
+  'caveat.asking_price_basis': 'All figures are based on asking prices. Uzbekistan has no open register of transaction prices, and closing prices are typically lower.',
+  'caveat.low_sample': 'There are few comparable listings here — the range is wide and should be treated with caution.',
+  'caveat.missing_attributes': 'Some fields were left blank. Filling them in narrows the range.',
+  'caveat.unusual_size': 'The area falls outside the typical market range, where the model is less reliable.',
+  'caveat.commercial_calibration': 'The model is calibrated on residential stock. An income approach suits commercial property better.',
+  'caveat.house_land_excluded': 'House valuations do not fully account for the separate value of the land parcel.',
+
+  'error.rate_limited': 'Too many requests. Try again in a minute.',
+  'error.validation_failed': 'Some of the details entered are not valid.',
+  'error.unknown_location': 'No market data for this location.',
+  'error.internal_error': 'An unexpected error occurred.',
+  'error.network': 'Could not reach the server.',
+  'error.required': 'This field is required',
+  'error.floor_exceeds_total_floors': 'Floor cannot exceed the number of floors in the building',
+  'error.price_out_of_range_for_deal_type': 'Price does not match the deal type — check the currency and period',
+
+  'how.title': 'How the estimate is built',
+  'how.step1': 'Start from the median price per m² in the district',
+  'how.step2': 'Apply adjustments for the property’s own attributes',
+  'how.step3': 'Widen the interval according to how complete the data is',
+  'how.step4': 'Compare the asking price against that interval',
+  'how.note': 'Location is counted exactly once, through the district median. The quality score never feeds into the price.',
+}
+
+const DICTS: Record<Locale, Dict> = { uz, ru, en }
+
+/**
+ * Looks up a translation. Falls back to the key itself rather than to another
+ * language, so a missing string is loud in development instead of silently
+ * showing Uzbek text to a Russian-speaking user.
+ */
+export function translate(locale: Locale, key: string, vars?: Record<string, string | number>): string {
+  const raw = DICTS[locale]?.[key] ?? DICTS[DEFAULT_LOCALE][key] ?? key
+  if (!vars) return raw
+  return raw.replace(/\{(\w+)\}/g, (match, name) => (name in vars ? String(vars[name]) : match))
+}
+
+export type Translator = (key: string, vars?: Record<string, string | number>) => string
+
+export function translatorFor(locale: Locale): Translator {
+  return (key, vars) => translate(locale, key, vars)
+}
