@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - run: npm ci
+
+      # Type errors and failing tests must break the build. The previous draft of
+      # this workflow ran lint with `|| true` and had no typecheck or test step at
+      # all, which is how a duplicate function declaration reached main and left
+      # the app unable to build.
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run lint
+      - run: npm run build
